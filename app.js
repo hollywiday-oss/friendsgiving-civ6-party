@@ -8,10 +8,37 @@
   const localRead = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { players: [], food: [], teams: {} }; } catch { return { players: [], food: [], teams: {} }; } };
   const localSave = value => localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
   let data = localRead();
-  let client = null;
+  let session = null;
   let sharedMode = false;
   let userId = '';
   let refreshRunning = false;
+
+  const sessionKey = `friendsgiving-session-${new URL(config.url || 'https://invalid.local').hostname}`;
+  async function authRequest(path, body) {
+    const response = await fetch(`${config.url}/auth/v1/${path}`, { method: 'POST', headers: { apikey: config.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.msg || result.message || 'Guest sign-in failed');
+    return result;
+  }
+  async function ensureSession() {
+    try { session = JSON.parse(localStorage.getItem(sessionKey) || 'null'); } catch { session = null; }
+    if (session?.refresh_token && session.expires_at * 1000 < Date.now() + 60000) {
+      try { session = await authRequest('token?grant_type=refresh_token', { refresh_token: session.refresh_token }); } catch { session = null; }
+    }
+    if (!session?.access_token) session = await authRequest('signup', { data: {} });
+    if (!session.expires_at && session.expires_in) session.expires_at = Math.floor(Date.now() / 1000) + session.expires_in;
+    localStorage.setItem(sessionKey, JSON.stringify(session)); userId = session.user.id;
+  }
+  async function api(path, options = {}) {
+    const response = await fetch(`${config.url}/rest/v1/${path}`, { ...options, headers: { apikey: config.anonKey, Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json', ...(options.headers || {}) } });
+    if (response.status === 204) return null;
+    const body = await response.text();
+    if (!response.ok) throw new Error(body || `Request failed (${response.status})`);
+    return body ? JSON.parse(body) : null;
+  }
+  const upsert = row => api('registrations?on_conflict=user_id%2Ckind%2Cname_key', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify(row) });
+  const updateRow = (id, values) => api(`registrations?id=eq.${encodeURIComponent(id)}&user_id=eq.${encodeURIComponent(userId)}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(values) });
+  const deleteOwnRows = () => api(`registrations?user_id=eq.${encodeURIComponent(userId)}`, { method: 'DELETE', headers: { Prefer: 'return=minimal' } });
 
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(item => { const active = item === tab; item.classList.toggle('active', active); item.setAttribute('aria-selected', String(active)); });
@@ -28,8 +55,7 @@
     const registration = { name, attendance, setup: attendance === 'play' ? form.get('setup') : null,
       team_mode: attendance === 'play' && form.get('setup') === 'own' ? form.get('teamMode') : null };
     if (sharedMode) {
-      const { error } = await client.from('registrations').upsert({ user_id: userId, kind: 'player', name_key: name.toLocaleLowerCase(), ...registration, food_type: null, dish: null, host_id: null }, { onConflict: 'user_id,kind,name_key' });
-      if (error) return setMessage('#civ-message', 'Could not save. Please check your connection and try again.');
+      try { await upsert({ user_id: userId, kind: 'player', name_key: name.toLocaleLowerCase(), ...registration, food_type: null, dish: null, host_id: null }); } catch { return setMessage('#civ-message', 'Could not save. Please check your connection and try again.'); }
       setMessage('#civ-message', `Registration saved for ${name}.`); await refreshShared();
     } else {
       const previous = data.players.findIndex(person => person.name.toLowerCase() === name.toLowerCase());
@@ -45,8 +71,7 @@
     if (sharedRequested && !sharedMode) return setMessage('#food-message', 'Shared sign-ups are unavailable right now. Please try again shortly.');
     const item = { name, food_type: form.get('type'), dish: String(form.get('dish') || '').trim() || null };
     if (sharedMode) {
-      const { error } = await client.from('registrations').upsert({ user_id: userId, kind: 'food', name_key: name.toLocaleLowerCase(), ...item, attendance: null, setup: null, team_mode: null, host_id: null }, { onConflict: 'user_id,kind,name_key' });
-      if (error) return setMessage('#food-message', 'Could not save. Please check your connection and try again.');
+      try { await upsert({ user_id: userId, kind: 'food', name_key: name.toLocaleLowerCase(), ...item, attendance: null, setup: null, team_mode: null, host_id: null }); } catch { return setMessage('#food-message', 'Could not save. Please check your connection and try again.'); }
       setMessage('#food-message', `Potluck registration saved for ${name}.`); event.currentTarget.reset(); await refreshShared();
     } else {
       const previous = data.food.findIndex(person => person.name.toLowerCase() === name.toLowerCase());
@@ -96,8 +121,7 @@
       document.querySelectorAll('.swap-select').forEach(select => select.addEventListener('change', async () => {
         const member = select.dataset.member, from = select.dataset.current, to = select.value;
         if (sharedMode) {
-      const { error } = await client.from('registrations').update({ host_id: to }).eq('id', member).eq('user_id', userId);
-          if (error) setMessage('#civ-message', 'Could not change teams. Please try again.'); else await refreshShared();
+      try { await updateRow(member, { host_id: to }); await refreshShared(); } catch { setMessage('#civ-message', 'Could not change teams. Please try again.'); }
         } else {
           data.teams = data.teams || {}; data.teams[from] = (data.teams[from] || []).filter(id => id !== member);
           data.teams[to] = [...new Set([...(data.teams[to] || []), member])]; localSave(data); renderTeams();
@@ -124,11 +148,10 @@
   }
 
   async function refreshShared() {
-    if (!client || !sharedMode || refreshRunning) return;
+    if (!session || !sharedMode || refreshRunning) return;
     refreshRunning = true;
     try {
-      const { data: rows, error } = await client.from('registrations').select('*').order('created_at');
-      if (error) throw error;
+      const rows = await api('registrations?select=*&order=created_at.asc');
       data.players = rows.filter(row => row.kind === 'player'); data.food = rows.filter(row => row.kind === 'food');
       renderTeams(); renderFood(); await pairCurrentPlayer();
       $('#sync-status').textContent = 'Shared sign-ups are connected.';
@@ -144,20 +167,14 @@
     for (const me of data.players.filter(person => person.user_id === userId && person.attendance === 'play' && person.setup === 'join' && !person.host_id)) {
       const counts = Object.fromEntries(openHosts.map(host => [host.id, data.players.filter(person => person.host_id === host.id).length]));
       const host = [...openHosts].sort((first, second) => counts[first.id] - counts[second.id])[0];
-      const { error } = await client.from('registrations').update({ host_id: host.id }).eq('id', me.id).eq('user_id', userId);
-      if (!error) { me.host_id = host.id; renderTeams(); }
+      try { await updateRow(me.id, { host_id: host.id }); me.host_id = host.id; renderTeams(); } catch { /* Retry pairing on the next refresh. */ }
     }
   }
 
   async function startSharedMode() {
     try {
-      if (!window.supabase?.createClient) throw new Error('Supabase library unavailable');
-      client = window.supabase.createClient(config.url, config.anonKey, { auth: { persistSession: true, autoRefreshToken: true } });
-      let { data: authData, error } = await client.auth.getSession();
-      if (error) throw error;
-      if (!authData.session) ({ data: authData, error } = await client.auth.signInAnonymously());
-      if (error || !authData.session) throw error || new Error('Could not start a guest session');
-      userId = authData.session.user.id; sharedMode = true;
+      await ensureSession();
+      sharedMode = true;
       await refreshShared();
       window.setInterval(() => { if (document.visibilityState === 'visible') refreshShared(); }, 8000);
       document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshShared(); });
@@ -174,8 +191,7 @@
     const prompt = sharedMode ? 'Remove your player and potluck sign-ups from the shared list?' : 'Clear all sign-ups saved in this browser?';
     if (!window.confirm(prompt)) return;
     if (sharedMode) {
-      const { error } = await client.from('registrations').delete().eq('user_id', userId);
-      if (error) { $('#sync-status').textContent = 'Could not remove your registrations. Please try again.'; return; }
+      try { await deleteOwnRows(); } catch { $('#sync-status').textContent = 'Could not remove your registrations. Please try again.'; return; }
       data.teams = {};
     } else { data = { players: [], food: [], teams: {} }; localSave(data); }
     renderTeams(); renderFood(); $('#civ-message').textContent = ''; $('#food-message').textContent = '';
