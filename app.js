@@ -83,6 +83,16 @@
     const minimum = total ? Math.min(...categories.map(category => counts[category])) : 0;
     const least = categories.filter(category => counts[category] === minimum);
     $('#balance-tip').textContent = total === 0 ? 'No potluck registrations yet.' : least.length === categories.length ? 'All categories have equal registrations.' : `Fewest registrations: ${least.map(category => labels[category]).join(' or ')}.`;
+    $('#food-roster-count').textContent = `${total} ${total === 1 ? 'dish' : 'dishes'}`;
+    if (!total) {
+      $('#food-list').innerHTML = '<div class="food-empty"><strong>No dishes registered yet.</strong><p>Potluck sign-ups will appear here.</p></div>';
+      return;
+    }
+    const icons = { appetizers: '🥙', mains: '🍛', desserts: '🍰', drinks: '🥤' };
+    $('#food-list').innerHTML = categories.flatMap(category => data.food
+      .filter(item => item.type === category)
+      .map(item => `<article class="food-card"><div class="food-card-header"><span>${icons[category]} ${labels[category]}</span></div><strong>${escapeHTML(item.name)}</strong><p>${item.dish ? escapeHTML(item.dish) : 'Dish details not added.'}</p></article>`))
+      .join('');
   }
   function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]); }
   $('#clear-data').addEventListener('click', () => { if (!data.players.length && !data.food.length) return; if (!window.confirm('Clear all sign-ups saved in this browser?')) return; data = { players: [], food: [] }; save(data); renderTeams(); renderFood(); $('#civ-message').textContent = ''; $('#food-message').textContent = ''; });

@@ -18,6 +18,20 @@
 .panel .teams-section{padding:40px 0 26px;margin:34px -24px 0}
 .panel .teams-inner{max-width:none;padding-left:24px;padding-right:24px}
 .panel .teams-toolbar{margin-top:22px}
+.food-roster{margin-top:38px;padding-top:25px;border-top:1px solid #dfceca}
+.food-roster-heading{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:15px}
+.food-roster-heading .eyebrow{margin:0 0 7px}
+.food-roster-heading h4{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.25;margin:0;color:var(--ink)}
+.food-roster-count{font-size:11px;color:#68575a;white-space:nowrap}
+.food-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.food-card{min-width:0;border:1px solid #dfceca;background:#fcf8f6;padding:14px 15px;color:var(--ink)}
+.food-card-header{font-size:10px;font-weight:700;letter-spacing:.7px;color:#854253;margin-bottom:9px}
+.food-card>strong{display:block;font-family:var(--display);font-size:16px;overflow-wrap:anywhere}
+.food-card>p{font-size:12px;line-height:1.55;color:#68575a;margin:6px 0 0;overflow-wrap:anywhere}
+.food-empty{grid-column:1/-1;border:1px dashed #c8aaa9;padding:20px;text-align:center;color:var(--ink)}
+.food-empty strong{font-family:var(--display);font-size:15px}
+.food-empty p,.food-roster-note{font-size:11px;line-height:1.6;color:#756367;margin:6px 0 0}
+.food-roster-note{margin-top:13px}
 .section-heading{min-width:0}
 .section-heading h2{overflow-wrap:anywhere}
 .team-card,.idea-card,.resource-card{min-width:0}
@@ -30,6 +44,8 @@
   .panel .teams-inner{padding-left:22px;padding-right:22px}
   .panel .teams-heading h2{font-size:40px}
   .panel .teams-heading>p{margin-top:12px}
+  .food-list{grid-template-columns:1fr}
+  .food-roster-heading h4{font-size:20px}
 }
 @media(max-width:380px){
   .main-gallery{grid-auto-rows:100px}
