@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#391821">
+  <meta name="description" content="Friendsgiving Around the World edition: Civilization VI registration, international potluck, beginner resources, and optional Pompeii costumes.">
+  <title>Friendsgiving- Around the World edition! Civ 6</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" aria-label="Friendsgiving"><span class="brand-mark">✳</span><span>FRIENDSGIVING <span class="brand-muted">· CIV 6</span></span></div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <p class="eyebrow"><span class="dot"></span> FRIENDSGIVING · AROUND THE WORLD EDITION</p>
+        <h1>Friendsgiving-<br><em>Around the World edition!</em><br><span class="hero-title-tail">Civ 6</span></h1>
+        <p class="hero-copy">Event registration for Civilization VI, an international potluck, and an optional Pompeii costume theme.</p>
+        <div class="hero-meta"><span>International potluck</span><span>Civilization VI</span></div>
+      </div>
+      <div class="hero-art" aria-label="Friendsgiving party decorations with stone walls, candlelight, and Roman-inspired details">
+        <img class="hero-photo" src="images/party-arch.png" alt="Stone arch and candlelight at the Friendsgiving party">
+        <div class="sun"></div><div class="map-orbit orbit-a"></div><div class="map-orbit orbit-b"></div>
+        <div class="map-land land-a"></div><div class="map-land land-b"></div><div class="map-land land-c"></div>
+        <div class="map-pin pin-a">✳</div><div class="map-pin pin-b">✳</div><div class="map-pin pin-c">✳</div>
+      </div>
+    </section>
+
+    <section class="main-gallery" aria-label="Friendsgiving party photos">
+      <img src="images/statue.png" alt="Classical statue framed by a stone arch">
+      <img src="images/drapery.png" alt="Pink and purple fabric draped across the ceiling">
+      <img src="images/shrine.png" alt="Candlelit display against a stone wall">
+      <img src="images/goblets.png" alt="Goblets arranged on a shelf">
+      <img src="images/feast.png" alt="Pumpkin and flowers beside a stone wall">
+    </section>
+
+    <section class="signup section-wrap" id="signup">
+      <div class="section-heading"><div><p class="eyebrow dark-eyebrow">EVENT REGISTRATION</p><h2>Registration<br><em>and information</em></h2></div><p>Register for the game, the potluck, or both. Entries are saved in this browser.</p></div>
+      <div class="tabs" role="tablist" aria-label="Friendsgiving pages">
+        <button class="tab active" id="tab-civ" role="tab" aria-selected="true" aria-controls="panel-civ" data-tab="civ"><span>🏛️</span> Civ VI</button>
+        <button class="tab" id="tab-food" role="tab" aria-selected="false" aria-controls="panel-food" data-tab="food"><span>🍲</span> Potluck</button>
+        <button class="tab" id="tab-resources" role="tab" aria-selected="false" aria-controls="panel-resources" data-tab="resources"><span>📖</span> Learn Civ</button>
+        <button class="tab" id="tab-costume" role="tab" aria-selected="false" aria-controls="panel-costume" data-tab="costume"><span>🌋</span> Pompeii</button>
+      </div>
+      <div class="panel" id="panel-civ" role="tabpanel" aria-labelledby="tab-civ">
+        <div class="panel-title"><div><p class="eyebrow dark-eyebrow">CIVILIZATION VI</p><h3>Player registration</h3></div><span class="panel-icon">♟</span></div>
+        <form id="civ-form">
+          <label class="field-label" for="civ-name">Name</label><input id="civ-name" name="name" placeholder="Enter your name" autocomplete="name" required maxlength="36">
+          <fieldset class="choice-group"><legend>Attendance</legend>
+            <label class="choice-card"><input type="radio" name="attendance" value="watch" checked><span class="choice-emoji">👀</span><span><strong>Watching</strong><small>Attend without playing.</small></span><span class="radio-mark"></span></label>
+            <label class="choice-card"><input type="radio" name="attendance" value="play"><span class="choice-emoji">🎮</span><span><strong>Playing</strong><small>Register to play Civilization VI.</small></span><span class="radio-mark"></span></label>
+          </fieldset>
+          <div id="player-options" class="conditional" hidden>
+            <fieldset class="choice-group"><legend>Game and equipment</legend>
+              <label class="choice-card"><input type="radio" name="setup" value="own" checked><span class="choice-emoji">💻</span><span><strong>I have the game and equipment</strong><small>My setup can be used for a team.</small></span><span class="radio-mark"></span></label>
+              <label class="choice-card"><input type="radio" name="setup" value="join"><span class="choice-emoji">🤝</span><span><strong>I need a team</strong><small>Pair me with a player who has a setup.</small></span><span class="radio-mark"></span></label>
+            </fieldset>
+            <fieldset class="choice-group" id="team-options"><legend>Team preference</legend>
+              <label class="choice-card"><input type="radio" name="teamMode" value="solo"><span class="choice-emoji">🧭</span><span><strong>Solo</strong><small>Use my setup without additional teammates.</small></span><span class="radio-mark"></span></label>
+              <label class="choice-card"><input type="radio" name="teamMode" value="open" checked><span class="choice-emoji">🧑‍🤝‍🧑</span><span><strong>Open to teammates</strong><small>Pair me with a player looking for a team.</small></span><span class="radio-mark"></span></label>
+            </fieldset>
+          </div>
+          <button class="button button-dark submit-button" type="submit">Save registration <span aria-hidden="true">→</span></button>
+          <p class="form-message" id="civ-message" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="panel" id="panel-food" role="tabpanel" aria-labelledby="tab-food" hidden>
+        <div class="panel-title"><div><p class="eyebrow dark-eyebrow">POTLUCK</p><h3>Potluck registration</h3></div><span class="panel-icon">♨</span></div>
+        <p class="food-intro">Dishes from around the world are encouraged. Select one category below. Counts show registrations saved in this browser.</p>
+        <div class="balance-box"><div class="balance-head"><strong>Current category counts</strong><span id="food-total">0 people</span></div><div class="balance-bar" aria-label="Potluck category balance"><span class="bar-appetizers"></span><span class="bar-mains"></span><span class="bar-desserts"></span><span class="bar-drinks"></span></div><div class="legend"><span><i class="swatch appetizers"></i>Appetizers <b id="count-appetizers">0</b></span><span><i class="swatch mains"></i>Main courses <b id="count-mains">0</b></span><span><i class="swatch desserts"></i>Desserts <b id="count-desserts">0</b></span><span><i class="swatch drinks"></i>Drinks <b id="count-drinks">0</b></span></div><p class="balance-tip" id="balance-tip">No potluck registrations yet.</p></div>
+        <form id="food-form">
+          <label class="field-label" for="food-name">Name</label><input id="food-name" name="name" placeholder="Enter your name" autocomplete="name" required maxlength="36">
+          <label class="field-label" for="food-type">Category</label><select id="food-type" name="type" required><option value="">Select a category</option><option value="appetizers">🥙 Appetizer</option><option value="mains">🍛 Main course</option><option value="desserts">🍰 Dessert</option><option value="drinks">🥤 Drinks</option></select>
+          <label class="field-label" for="food-dish">Dish or country (optional)</label><input id="food-dish" name="dish" placeholder="For example, Japanese onigiri" maxlength="70">
+          <button class="button button-dark submit-button" type="submit">Save registration <span aria-hidden="true">→</span></button><p class="form-message" id="food-message" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="panel resource-panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources" hidden>
+        <div class="panel-title"><div><p class="eyebrow dark-eyebrow">CIVILIZATION VI RESOURCES</p><h3>Beginner guides and links</h3></div><span class="panel-icon">✦</span></div>
+        <p class="food-intro">Civilization VI is a turn-based strategy game. These links cover game rules, purchasing, and beginner instructions.</p>
+        <div class="link-grid">
+          <a class="resource-card" href="https://civilization.fandom.com/wiki/Civilization_VI" target="_blank" rel="noopener"><span class="resource-icon">⌕</span><span class="resource-kicker">REFERENCE</span><strong>Civilization VI Wiki</strong><small>Leaders, units, districts, victories, and game mechanics.</small><span class="resource-arrow">↗</span></a>
+          <a class="resource-card" href="https://store.steampowered.com/app/289070/Civilization_VI/" target="_blank" rel="noopener"><span class="resource-icon">↗</span><span class="resource-kicker">PURCHASE</span><strong>Steam store page</strong><small>Official store page with current price and system requirements.</small><span class="resource-arrow">↗</span></a>
+          <a class="resource-card" href="https://isthereanydeal.com/game/sid-meiers-civilization-vi/products/" target="_blank" rel="noopener"><span class="resource-icon">$</span><span class="resource-kicker">PRICE COMPARISON</span><strong>IsThereAnyDeal</strong><small>Price history and current offers from tracked retailers.</small><span class="resource-arrow">↗</span></a>
+          <a class="resource-card" href="https://store.2k.com/news/sid-meiers-civilization-vi-new-player-quick-guide" target="_blank" rel="noopener"><span class="resource-icon">✦</span><span class="resource-kicker">PUBLISHER GUIDE</span><strong>2K new player guide</strong><small>Publisher overview and information about the in-game tutorial.</small><span class="resource-arrow">↗</span></a>
+          <a class="resource-card" href="https://www.youtube.com/watch?v=UBh2YM-0xws" target="_blank" rel="noopener"><span class="resource-icon">▶</span><span class="resource-kicker">VIDEO · OFFICIAL</span><strong>Your first turns</strong><small>Official video covering early turns and settling a city.</small><span class="resource-arrow">↗</span></a>
+          <a class="resource-card" href="https://www.youtube.com/watch?v=3zBlxZdz31M" target="_blank" rel="noopener"><span class="resource-icon">▶</span><span class="resource-kicker">VIDEO · BEGINNER GUIDE</span><strong>Game basics</strong><small>Overview of core systems and victory goals.</small><span class="resource-arrow">↗</span></a>
+        </div>
+        <p class="honesty-note">No discount code is listed because a reliable current code was not available. Check Steam and the price comparison page for current sale prices.</p>
+      </div>
+      <div class="panel costume-panel" id="panel-costume" role="tabpanel" aria-labelledby="tab-costume" hidden>
+        <div class="panel-title"><div><p class="eyebrow dark-eyebrow">OPTIONAL COSTUME THEME</p><h3>Pompeii-inspired clothing</h3></div><span class="panel-icon">☼</span></div>
+        <p class="food-intro">Costumes are optional. Suggested colors include burgundy, muted pink, cream, and terracotta. A tunic, draped shawl, simple belt, or gold-colored accessory can reference ancient Roman clothing.</p>
+        <div class="style-note"><span>✦</span><p>Roman clothing included tunics and draped garments. The Royal Ontario Museum provides an overview of toga and stola styles. <a href="https://www.rom.on.ca/learn/resources/activity-wear-toga" target="_blank" rel="noopener">Royal Ontario Museum: Roman dress ↗</a></p></div>
+        <div class="moodboard">
+          <figure class="mood-large"><img src="images/roman-gown.png" alt="Long bronze and plum Roman-inspired gown with a draped cape"></figure>
+          <figure><img src="images/pompeii-fresco.png" alt="Pompeian wall painting with figures in colorful draped garments"></figure>
+          <figure><img src="images/roman-dress.png" alt="Soft gold draped Roman-inspired dress"></figure>
+          <figure><img src="images/roman-garments.png" alt="Illustration of ancient Roman tunics and togas"></figure>
+          <figure><img src="images/gladiators.png" alt="Gladiators in dark leather and tunic costume inspiration"></figure>
+        </div>
+        <div class="idea-columns">
+          <div class="idea-card"><p class="eyebrow dark-eyebrow">CLOTHING AND ACCESSORIES</p><h4>Amazon search links</h4><p>Search results are sorted by price. Listing prices and availability vary.</p><div class="shopping-links"><a href="https://www.amazon.com/s?k=roman+tunic+costume+women+men&s=price-asc-rank" target="_blank" rel="noopener">Roman tunics and base layers ↗</a><a href="https://www.amazon.com/s?k=laurel+wreath+headband+gold+leaf&s=price-asc-rank" target="_blank" rel="noopener">Laurel wreaths and leaf headbands ↗</a><a href="https://www.amazon.com/s?k=roman+gladiator+sandals+women+men&s=price-asc-rank" target="_blank" rel="noopener">Gladiator-style sandals ↗</a><a href="https://www.amazon.com/s?k=gold+roman+arm+cuff+bracelet&s=price-asc-rank" target="_blank" rel="noopener">Gold cuffs and Roman-inspired jewelry ↗</a></div></div>
+          <div class="idea-card diy-card"><p class="eyebrow dark-eyebrow">DIY TUTORIALS</p><h4>Costume instructions</h4><p>Use a bedsheet or inexpensive fabric for a draped costume. Tutorials also cover wreaths and no-sew tunics.</p><div class="shopping-links"><a href="https://www.youtube.com/watch?v=TxfLaEBJ83Q" target="_blank" rel="noopener">Toga from a bedsheet ↗</a><a href="https://www.youtube.com/results?search_query=DIY+laurel+wreath+headband+costume" target="_blank" rel="noopener">DIY laurel wreath tutorials ↗</a><a href="https://www.youtube.com/results?search_query=DIY+Roman+tunic+costume+no+sew" target="_blank" rel="noopener">No-sew Roman tunic tutorials ↗</a></div><a class="history-link" href="https://www.pompeionline.net/en/archaeological-park-of-pompeii/pompeian-curiosities/fashion-in-ancient-pompeii" target="_blank" rel="noopener">Pompeii Online: ancient fashion ↗</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="teams-section">
+      <div class="section-wrap teams-inner"><div class="section-heading teams-heading"><div><p class="eyebrow">TEAM ASSIGNMENTS</p><h2>Player<br><em>teams</em></h2></div><p>Players requesting a team are paired with players who have a setup and are open to teammates. Use the menus to switch team assignments.</p></div>
+        <div class="teams-toolbar"><div class="teams-summary"><span class="live-dot"></span><span id="team-summary">No players signed up yet</span></div><button id="clear-data" class="text-button" type="button">Clear this device's sign-ups</button></div>
+        <div id="teams-list" class="teams-list"><div class="empty-state"><span>🏛</span><strong>No players registered.</strong><p>Player registrations will appear here.</p></div></div>
+        <p class="privacy-note">Registrations are stored in this browser only. They do not sync between devices.</p>
+      </div>
+    </section>
+    <footer><div class="brand footer-brand"><span class="brand-mark">✳</span><span>FRIENDSGIVING <span class="brand-muted">· CIV 6</span></span></div><span>Event information and registration</span></footer>
+  </main>
+</body>
+</html>
