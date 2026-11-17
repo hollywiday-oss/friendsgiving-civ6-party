@@ -15,7 +15,7 @@
 
   const sessionKey = `friendsgiving-session-${new URL(config.url || 'https://invalid.local').hostname}`;
   async function authRequest(path, body) {
-    const response = await fetch(`${config.url}/auth/v1/${path}`, { method: 'POST', headers: { apikey: config.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const response = await fetch(`${config.url}/auth/v1/${path}`, { method: 'POST', headers: { apikey: config.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
     const result = await response.json();
     if (!response.ok) throw new Error(result.msg || result.message || 'Guest sign-in failed');
     return result;
@@ -30,7 +30,7 @@
     localStorage.setItem(sessionKey, JSON.stringify(session)); userId = session.user.id;
   }
   async function api(path, options = {}) {
-    const response = await fetch(`${config.url}/rest/v1/${path}`, { ...options, headers: { apikey: config.anonKey, Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json', ...(options.headers || {}) } });
+    const response = await fetch(`${config.url}/rest/v1/${path}`, { ...options, headers: { apikey: config.anonKey, Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json', ...(options.headers || {}) }, signal: AbortSignal.timeout(12000) });
     if (response.status === 204) return null;
     const body = await response.text();
     if (!response.ok) throw new Error(body || `Request failed (${response.status})`);
