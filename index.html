@@ -21,9 +21,8 @@
     <section class="hero" id="home">
       <div class="hero-text">
         <p class="eyebrow"><span class="dot"></span> FRIENDSGIVING · AROUND THE WORLD EDITION</p>
-        <h1>Friendsgiving-<br><em>Around the World edition!</em><br><span class="hero-title-tail">Civ 6</span></h1>
-        <p class="hero-copy">Event registration for Civilization VI, an international potluck, and an optional Pompeii costume theme.</p>
-        <div class="hero-meta"><span>International potluck</span><span>Civilization VI</span></div>
+        <h1>Friendsgiving-<br><em>Around the World</em><br><span class="hero-title-tail">edition! Civ 6</span></h1>
+        <p class="hero-copy">Civilization VI, an international potluck, and an optional Pompeii costume theme.</p>
       </div>
       <div class="hero-art" aria-label="Friendsgiving party decorations with stone walls, candlelight, and Roman-inspired details">
         <img class="hero-photo" src="images/party-arch.png" alt="Stone arch and candlelight at the Friendsgiving party">
@@ -42,7 +41,7 @@
     </section>
 
     <section class="signup section-wrap" id="signup">
-      <div class="section-heading"><div><p class="eyebrow dark-eyebrow">EVENT REGISTRATION</p><h2>Registration<br><em>and information</em></h2></div><p>Register for the game, the potluck, or both. Entries are saved in this browser.</p></div>
+      <div class="section-heading"><div><p class="eyebrow dark-eyebrow">EVENT</p><h2>Sign up<br><em>for the party</em></h2></div><p>Use the tabs to register, review Civilization VI resources, or view the optional costume theme. Sign-ups are stored in this browser.</p></div>
       <div class="tabs" role="tablist" aria-label="Friendsgiving pages">
         <button class="tab active" id="tab-civ" role="tab" aria-selected="true" aria-controls="panel-civ" data-tab="civ"><span>🏛️</span> Civ VI</button>
         <button class="tab" id="tab-food" role="tab" aria-selected="false" aria-controls="panel-food" data-tab="food"><span>🍲</span> Potluck</button>
@@ -70,6 +69,13 @@
           <button class="button button-dark submit-button" type="submit">Save registration <span aria-hidden="true">→</span></button>
           <p class="form-message" id="civ-message" aria-live="polite"></p>
         </form>
+        <section class="teams-section">
+          <div class="section-wrap teams-inner"><div class="section-heading teams-heading"><div><p class="eyebrow">TEAM ASSIGNMENTS</p><h2>Player<br><em>teams</em></h2></div><p>Players requesting a team are paired with players who have a setup and are open to teammates. Use the menus to switch team assignments.</p></div>
+            <div class="teams-toolbar"><div class="teams-summary"><span class="live-dot"></span><span id="team-summary">No players signed up yet</span></div><button id="clear-data" class="text-button" type="button">Clear this device's sign-ups</button></div>
+            <div id="teams-list" class="teams-list"><div class="empty-state"><span>🏛</span><strong>No players registered.</strong><p>Player registrations will appear here.</p></div></div>
+            <p class="privacy-note">Registrations are stored in this browser only. They do not sync between devices.</p>
+          </div>
+        </section>
       </div>
       <div class="panel" id="panel-food" role="tabpanel" aria-labelledby="tab-food" hidden>
         <div class="panel-title"><div><p class="eyebrow dark-eyebrow">POTLUCK</p><h3>Potluck registration</h3></div><span class="panel-icon">♨</span></div>
@@ -113,13 +119,6 @@
       </div>
     </section>
 
-    <section class="teams-section">
-      <div class="section-wrap teams-inner"><div class="section-heading teams-heading"><div><p class="eyebrow">TEAM ASSIGNMENTS</p><h2>Player<br><em>teams</em></h2></div><p>Players requesting a team are paired with players who have a setup and are open to teammates. Use the menus to switch team assignments.</p></div>
-        <div class="teams-toolbar"><div class="teams-summary"><span class="live-dot"></span><span id="team-summary">No players signed up yet</span></div><button id="clear-data" class="text-button" type="button">Clear this device's sign-ups</button></div>
-        <div id="teams-list" class="teams-list"><div class="empty-state"><span>🏛</span><strong>No players registered.</strong><p>Player registrations will appear here.</p></div></div>
-        <p class="privacy-note">Registrations are stored in this browser only. They do not sync between devices.</p>
-      </div>
-    </section>
     <footer><div class="brand footer-brand"><span class="brand-mark">✳</span><span>FRIENDSGIVING <span class="brand-muted">· CIV 6</span></span></div><span>Event information and registration</span></footer>
   </main>
 </body>
