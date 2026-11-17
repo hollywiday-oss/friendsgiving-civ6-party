@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -41,7 +43,8 @@
     </section>
 
     <section class="signup section-wrap" id="signup">
-      <div class="section-heading"><div><p class="eyebrow dark-eyebrow">EVENT</p><h2>Sign up<br><em>for the party</em></h2></div><p>Use the tabs to register, review Civilization VI resources, or view the optional costume theme. Sign-ups are stored in this browser.</p></div>
+      <div class="section-heading"><div><p class="eyebrow dark-eyebrow">EVENT</p><h2>Sign up<br><em>for the party</em></h2></div><p>Use the tabs to register, review Civilization VI resources, or view the optional costume theme. Sign-ups are shared across devices.</p></div>
+      <p class="sync-status" id="sync-status" aria-live="polite">Connecting to shared sign-ups…</p>
       <div class="tabs" role="tablist" aria-label="Friendsgiving pages">
         <button class="tab active" id="tab-civ" role="tab" aria-selected="true" aria-controls="panel-civ" data-tab="civ"><span>🏛️</span> Civ VI</button>
         <button class="tab" id="tab-food" role="tab" aria-selected="false" aria-controls="panel-food" data-tab="food"><span>🍲</span> Potluck</button>
@@ -71,15 +74,15 @@
         </form>
         <section class="teams-section">
           <div class="section-wrap teams-inner"><div class="section-heading teams-heading"><div><p class="eyebrow">TEAM ASSIGNMENTS</p><h2>Player<br><em>teams</em></h2></div><p>Players requesting a team are paired with players who have a setup and are open to teammates. Use the menus to switch team assignments.</p></div>
-            <div class="teams-toolbar"><div class="teams-summary"><span class="live-dot"></span><span id="team-summary">No players signed up yet</span></div><button id="clear-data" class="text-button" type="button">Clear this device's sign-ups</button></div>
+            <div class="teams-toolbar"><div class="teams-summary"><span class="live-dot"></span><span id="team-summary">No players signed up yet</span></div><button id="clear-data" class="text-button" type="button">Remove my registrations</button></div>
             <div id="teams-list" class="teams-list"><div class="empty-state"><span>🏛</span><strong>No players registered.</strong><p>Player registrations will appear here.</p></div></div>
-            <p class="privacy-note">Registrations are stored in this browser only. They do not sync between devices.</p>
+            <p class="privacy-note">Sign-ups are shared with guests on all devices. Each guest can update or remove their own registrations.</p>
           </div>
         </section>
       </div>
       <div class="panel" id="panel-food" role="tabpanel" aria-labelledby="tab-food" hidden>
         <div class="panel-title"><div><p class="eyebrow dark-eyebrow">POTLUCK</p><h3>Potluck registration</h3></div><span class="panel-icon">♨</span></div>
-        <p class="food-intro">Dishes from around the world are encouraged. Select one category below. Counts show registrations saved in this browser.</p>
+        <p class="food-intro">Dishes from around the world are encouraged. Select one category below. Counts include shared sign-ups.</p>
         <div class="balance-box"><div class="balance-head"><strong>Current category counts</strong><span id="food-total">0 people</span></div><div class="balance-bar" aria-label="Potluck category balance"><span class="bar-appetizers"></span><span class="bar-mains"></span><span class="bar-desserts"></span><span class="bar-drinks"></span></div><div class="legend"><span><i class="swatch appetizers"></i>Appetizers <b id="count-appetizers">0</b></span><span><i class="swatch mains"></i>Main courses <b id="count-mains">0</b></span><span><i class="swatch desserts"></i>Desserts <b id="count-desserts">0</b></span><span><i class="swatch drinks"></i>Drinks <b id="count-drinks">0</b></span></div><p class="balance-tip" id="balance-tip">No potluck registrations yet.</p></div>
         <form id="food-form">
           <label class="field-label" for="food-name">Name</label><input id="food-name" name="name" placeholder="Enter your name" autocomplete="name" required maxlength="36">
@@ -90,7 +93,7 @@
         <section class="food-roster" aria-labelledby="food-roster-title">
           <div class="food-roster-heading"><div><p class="eyebrow dark-eyebrow">POTLUCK SIGN-UPS</p><h4 id="food-roster-title">Who is bringing what</h4></div><span class="food-roster-count" id="food-roster-count">0 dishes</span></div>
           <div id="food-list" class="food-list"><div class="food-empty"><strong>No dishes registered yet.</strong><p>Potluck sign-ups will appear here.</p></div></div>
-          <p class="food-roster-note">This list shows sign-ups saved in this browser only.</p>
+          <p class="food-roster-note">This list is shared with guests on every device.</p>
         </section>
       </div>
       <div class="panel resource-panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources" hidden>

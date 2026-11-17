@@ -1,24 +1,26 @@
 # Friendsgiving- Around the World edition! Civ 6
 
-A mobile-friendly Friendsgiving site with Civ VI registration, a potluck sign-up, beginner resources, and optional Pompeii-inspired costume ideas.
+A mobile-friendly event site for Civilization VI registration, an international potluck, beginner resources, and optional Pompeii-inspired costumes.
 
-## Open or host it
+## Registration storage
 
-Open `index.html` in a browser, or upload `index.html`, `styles.css`, `app.js`, and the `images` folder together to a static website host. No build step is required.
+The live site uses Supabase on its free plan. Guests do not need email addresses or accounts. The site creates an anonymous guest session in each browser, then saves sign-ups to a shared database so everyone can view them. Guests can update their entries and switch their own team assignment from the browser they used to sign up.
 
-## What it does
+The browser code uses the project's publishable key. Row-level security restricts changes and removals to the guest session that created a registration. Never put a Supabase secret key in this public repository.
 
-- Lets guests sign up to watch or play; players can bring a Civ VI setup and choose solo/open teammates, or ask to join a team.
-- Pairs people looking for a team with open setups and lets guests move between open teams.
-- Tracks appetizer, main course, dessert, and drink sign-ups, and suggests whichever category needs more contributions.
-- Includes a Civ VI starter guide with official game and learning links, plus a Pompeii-inspired costume moodboard, Amazon search links, and DIY tutorials.
-- Uses the host's supplied party and costume reference photos in the design.
-- Saves sign-ups in the current browser using local storage. Names are used as the sign-up key, so submitting again with the same name updates that guest's entry.
+## Files
 
-## Shared registrations
+- `index.html`, `styles.css`, and `app.js` make up the site.
+- `supabase-config.js` contains the Supabase project URL and publishable key.
+- `images/` contains the party and costume reference photos.
 
-This static version keeps each visitor's sign-ups on that visitor's device; it does not sync across different guests' phones. For a real event where guests register separately and all entries appear on one shared board, connect the forms to a shared database or form service and host the page online.
+The site is hosted on GitHub Pages and uses the Supabase JavaScript client from jsDelivr.
 
-## About links and discounts
+## Pages
 
-The Steam link goes to the official store. The deal comparison link uses IsThereAnyDeal, which tracks authorized game retailers. Sale prices and availability change; no coupon code is promised. Amazon links are search pages rather than endorsements of any specific listing, and their prices and stock can change.
+- Civ VI player or watcher registration and team assignments
+- Potluck registration with category counts and a shared list of who is bringing what
+- Civilization VI learning and purchase links
+- Optional Pompeii costume references, shopping searches, and DIY videos
+
+The Supabase Free plan includes usage limits and may pause projects after inactivity. Check the current [Supabase pricing page](https://supabase.com/pricing) for plan details.

@@ -19,6 +19,7 @@
 .panel .teams-inner{max-width:none;padding-left:24px;padding-right:24px}
 .panel .teams-toolbar{margin-top:22px}
 .food-roster{margin-top:38px;padding-top:25px;border-top:1px solid #dfceca}
+.sync-status{margin:14px 0 -18px;color:#783747;font-size:11px;line-height:1.6}
 .food-roster-heading{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:15px}
 .food-roster-heading .eyebrow{margin:0 0 7px}
 .food-roster-heading h4{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.25;margin:0;color:var(--ink)}
@@ -46,6 +47,7 @@
   .panel .teams-heading>p{margin-top:12px}
   .food-list{grid-template-columns:1fr}
   .food-roster-heading h4{font-size:20px}
+  .sync-status{margin-bottom:-12px}
 }
 @media(max-width:380px){
   .main-gallery{grid-auto-rows:100px}
